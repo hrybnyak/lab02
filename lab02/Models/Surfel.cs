@@ -6,7 +6,7 @@ namespace lab02.Models
     {
         public Vector3 Normal { get; set; }
         public Vector3 Point { get; set; }
-        public double T { get; set; }
+        public float T { get; set; }
 
     }
 }

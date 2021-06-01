@@ -1,7 +1,8 @@
-﻿using Aspose.ThreeD;
-using ObjLoader.Loader.Loaders;
-using System;
+﻿using lab02.Models;
+using lab02.ObjManupilations;
+using lab02.Renderer;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace lab02
@@ -10,14 +11,23 @@ namespace lab02
     {
         static void Main(string[] args)
         {
-            var objLoaderFactory = new ObjLoaderFactory();
-            var objLoader = objLoaderFactory.Create();
-            using (var fileStream = new FileStream(@"D:\School\lab02\lab02\Mickey Mouse.obj", FileMode.Open))
+            var objectLoader = new ObjectLoader();
+            var meshExtracter = new MeshExtracter();
+            var imageCreator = new ImageCreator();
+            var rayscaller = new Rayscaler();
+            var shader = new FlatShader();
+            var renderer = new Renderer.Renderer(imageCreator, rayscaller, shader);
+            var loadresult = objectLoader.Load(@"D:\School\lab02\simplecow.obj");
+            //Transformation t = new Transformation();
+            //t.Translate(new System.Numerics.Vector3(0, 0, 2));
+            var mesh = meshExtracter.ExtractMeshFromLoadResult(loadresult) as Mesh.Mesh;
+            var sceneObject = new SceneObject(Color.FromArgb(130, 15, 220), mesh);
+            var scene = new Scene(sceneObject);
+            var rendered = renderer.RenderImage(scene);
+            using (var fs = new FileStream("result.png", FileMode.Create))
             {
-                var result = objLoader.Load(fileStream);
+                rendered.Save(fs, ImageFormat.Png);
             }
-
-
         }
     }
 }

@@ -68,7 +68,6 @@ namespace lab02.Mesh
                 T = t,
                 Point = point,
                 Normal = CalculateNormal(point)
-
             };
 
             return true;
@@ -76,8 +75,8 @@ namespace lab02.Mesh
 
         public IMesh Transform(Matrix4x4 transformationMatrix)
         {
-            var extents = transformationMatrix.MultiplyByVector(Extents);
-            var center = transformationMatrix.MultiplyByPoint(Center);
+            var extents = transformationMatrix.MultiplyVector(Extents);
+            var center = transformationMatrix.MultiplyPoint(Center);
             var min = center - extents;
             var max = center + extents;
             return new Box(min, max);

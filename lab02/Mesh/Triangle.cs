@@ -87,14 +87,14 @@ namespace lab02.Mesh
 
         public IMesh Transform(Matrix4x4 transformationMatrix)
         {
-            var vertex1 = transformationMatrix.MultiplyByPoint(Vertex1);
-            var vertex2 = transformationMatrix.MultiplyByPoint(Vertex2);
-            var vertex3 = transformationMatrix.MultiplyByPoint(Vertex3);
+            var vertex1 = transformationMatrix.MultiplyPoint(Vertex1);
+            var vertex2 = transformationMatrix.MultiplyPoint(Vertex2);
+            var vertex3 = transformationMatrix.MultiplyPoint(Vertex3);
             if (Matrix4x4.Invert(transformationMatrix, out var inverted))
             {
-                var normal1 = inverted.MultiplyByVector(Normal1);
-                var normal2 = inverted.MultiplyByVector(Normal2);
-                var normal3 = inverted.MultiplyByVector(Normal3);
+                var normal1 = inverted.MultiplyVector(Normal1);
+                var normal2 = inverted.MultiplyVector(Normal2);
+                var normal3 = inverted.MultiplyVector(Normal3);
                 return new Triangle(vertex1, vertex2, vertex3,
                     normal1, normal2, normal3);
             }

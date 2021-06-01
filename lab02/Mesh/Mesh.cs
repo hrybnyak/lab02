@@ -57,7 +57,7 @@ namespace lab02.Mesh
             var triangles = new List<Triangle>();
             foreach (var triangle in Triangles)
             {
-                triangle.Transform(transformationMatrix);
+                triangles.Add(triangle.Transform(transformationMatrix) as Triangle);
             }
             return new Mesh(triangles);
         }

@@ -4,128 +4,29 @@ namespace lab02.Extensions
 {
     public static class Matrix4x4Extensions
     {
-        public static Vector3 MultiplyByVector(this Matrix4x4 m, Vector3 v)
+        public static Vector3 MultiplyVector(this Matrix4x4 matrix, Vector3 vector)
         {
-            Vector3 vector = new();
-            vector.X = m.M11 * v.X + m.M12 * v.Y + m.M13 * v.Z;
-            vector.Y = m.M21 * v.X + m.M22 * v.Y + m.M23 * v.Z;
-            vector.Z = m.M31 * v.X + m.M32 * v.Y + m.M33 * v.Z;
-            return vector;
+            Vector3 result = new();
+            result.X = matrix.M11 * vector.X + matrix.M12 * vector.Y + matrix.M13 * vector.Z;
+            result.Y = matrix.M21 * vector.X + matrix.M22 * vector.Y + matrix.M23 * vector.Z;
+            result.Z = matrix.M31 * vector.X + matrix.M32 * vector.Y + matrix.M33 * vector.Z;
+            return result;
         }
 
-        public static Vector3 MultiplyByPoint(this Matrix4x4 m, Vector3 v)
+        public static Vector3 MultiplyPoint(this Matrix4x4 matrix, Vector3 point)
         {
-            Vector3 vector = new();
-            vector.X = m.M11 * v.X + m.M12 * v.Y + m.M13 * v.Z + m.M14;
-            vector.Y = m.M21 * v.X + m.M22 * v.Y + m.M23 * v.Z + m.M24;
-            vector.Z = m.M31 * v.X + m.M32 * v.Y + m.M33 * v.Z + m.M34;
-
-            var n = 1 / (m.M41 * v.X + m.M42 * v.Y + m.M43 * v.Z + m.M44);
+            var vector = matrix.MultiplyVector(point);
+            vector.X += matrix.M14;
+            vector.Y += matrix.M24;
+            vector.Z += matrix.M34;
+            
+            var n = 1 / (matrix.M41 * point.X + matrix.M42 * point.Y + matrix.M43 * point.Z + matrix.M44);
 
             vector.X *= n;
             vector.Y *= n;
             vector.Z *= n;
+
             return vector;
-        }
-
-        public static Matrix4x4 TRS(Vector3 pos, Quaternion q, Vector3 s)
-        {
-            var translate = Translate(pos);
-            var rotation = Rotate(q);
-            var scale = Scale(s);
-            return translate * rotation * scale;
-        }
-
-        public static Matrix4x4 Translate(Vector3 vector)
-        {
-            Matrix4x4 matrix;
-            matrix.M11 = 1f;
-            matrix.M12 = 0.0f;
-            matrix.M13 = 0.0f;
-            matrix.M14 = vector.X;
-            matrix.M21 = 0.0f;
-            matrix.M22 = 1f;
-            matrix.M23 = 0.0f;
-            matrix.M24 = vector.Y;
-            matrix.M31 = 0.0f;
-            matrix.M32 = 0.0f;
-            matrix.M33 = 1f;
-            matrix.M34 = vector.Z;
-            matrix.M41 = 0.0f;
-            matrix.M42 = 0.0f;
-            matrix.M43 = 0.0f;
-            matrix.M44 = 1f;
-            return matrix;
-        }
-
-        public static Matrix4x4 Rotate(Quaternion q)
-        {
-            var num1 = q.X * 2f;
-            var num2 = q.Y * 2f;
-            var num3 = q.Z * 2f;
-            var num4 = q.X * num1;
-            var num5 = q.Y * num2;
-            var num6 = q.Z * num3;
-            var num7 = q.X * num2;
-            var num8 = q.X * num3;
-            var num9 = q.Y * num3;
-            var num10 = q.W * num1;
-            var num11 = q.W * num2;
-            var num12 = q.W * num3;
-            Matrix4x4 matrix;
-            matrix.M11 = 1.0f - (num5 + num6);
-            matrix.M21 = num7 + num12;
-            matrix.M31 = num8 - num11;
-            matrix.M41 = 0.0f;
-            matrix.M12 = num7 - num12;
-            matrix.M22 = 1.0f - (num4 + num6);
-            matrix.M32 = num9 + num10;
-            matrix.M42 = 0.0f;
-            matrix.M13 = num8 + num11;
-            matrix.M23 = num9 - num10;
-            matrix.M33 = 1.0f - (num4 + num5);
-            matrix.M43 = 0.0f;
-            matrix.M14 = 0.0f;
-            matrix.M24 = 0.0f;
-            matrix.M34 = 0.0f;
-            matrix.M44 = 1f;
-            return matrix;
-        }
-
-        public static Matrix4x4 Scale(Vector3 vector)
-        {
-            Matrix4x4 matrix;
-            matrix.M11 = vector.X;
-            matrix.M12 = 0.0f;
-            matrix.M13 = 0.0f;
-            matrix.M14 = 0.0f;
-            matrix.M21 = 0.0f;
-            matrix.M22 = vector.Y;
-            matrix.M23 = 0.0f;
-            matrix.M24 = 0.0f;
-            matrix.M31 = 0.0f;
-            matrix.M32 = 0.0f;
-            matrix.M33 = vector.Z;
-            matrix.M34 = 0.0f;
-            matrix.M41 = 0.0f;
-            matrix.M42 = 0.0f;
-            matrix.M43 = 0.0f;
-            matrix.M44 = 1f;
-            return matrix;
-        }
-
-        public static Vector3 ExtractTranslation(this Matrix4x4 m)
-        {
-            return new Vector3(m.M14, m.M24, m.M34);
-        }
-
-        public static Vector3 ExtractScale(this Matrix4x4 m)
-        {
-            return new Vector3(
-                new Vector3(m.M11, m.M21, m.M31).Length(),
-                new Vector3(m.M12, m.M22, m.M32).Length(),
-                new Vector3(m.M13, m.M23, m.M33).Length()
-            );
         }
     }
 }
