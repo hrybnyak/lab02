@@ -17,9 +17,7 @@ namespace lab02
             var rayscaller = new Rayscaler();
             var shader = new FlatShader();
             var renderer = new Renderer.Renderer(imageCreator, rayscaller, shader);
-            var loadresult = objectLoader.Load(@"D:\School\lab02\simplecow.obj");
-            //Transformation t = new Transformation();
-            //t.Translate(new System.Numerics.Vector3(0, 0, 2));
+            var loadresult = objectLoader.Load(@"D:\School\lab02\simplecow.obj")
             var mesh = meshExtracter.ExtractMeshFromLoadResult(loadresult) as Mesh.Mesh;
             var sceneObject = new SceneObject(Color.FromArgb(130, 15, 220), mesh);
             var scene = new Scene(sceneObject);
