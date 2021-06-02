@@ -36,11 +36,8 @@ namespace lab02.CommandExecutor
             var sceneObject = new SceneObject(Color.FromArgb(130, 15, 220), mesh);
             var scene = new Scene(sceneObject);
             var rendered = _renderer.RenderImage(scene);
-            using (var fs = new FileStream(output, FileMode.Create))
-            {
-                rendered.Save(fs, ImageFormat.Png);
-            }
-
+            using var fs = new FileStream(output, FileMode.Create);
+            rendered.Save(fs, ImageFormat.Png);
         }
     }
 }
